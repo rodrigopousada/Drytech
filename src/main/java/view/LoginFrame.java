@@ -1,5 +1,6 @@
 package view;
 
+import dao.Conexao;
 import dao.UsuarioDAO;
 import model.Usuario;
 import javax.swing.*;
@@ -15,6 +16,11 @@ public class LoginFrame extends JFrame {
     // Aqui a gente vai conectar com as tabelas do banco quando tiver o url
 
     public LoginFrame(Connection conn) {
+        try{
+            this.conn = Conexao.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         setTitle("Login");
         setSize(300, 150);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -49,14 +55,14 @@ public class LoginFrame extends JFrame {
         String senha = new String ( pfSenha.getPassword());
 
         try {
-            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             Usuario user = usuarioDAO.buscarPorNome(usuario);
 
             if (user != null && user.getPassword().equals(senha) && user.isAtivo()) {
                 JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
-                // Aqui pode abrir a tela principal e fechar a tela de login
-                // new MainFrame(conn).setVisible(true);
-                // this.dispose();
+                /* Aqui pode abrir a tela principal e fechar a tela de login
+                 new MainFrame(conn).setVisible(true);
+                 this.dispose();*/
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Usuário ou senha inválidos.",

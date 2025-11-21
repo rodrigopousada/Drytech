@@ -9,8 +9,12 @@ import java.util.List;
 public class UsuarioDAO {
     private Connection conn;
 
-    public UsuarioDAO(Connection conn) {
-        this.conn = conn;
+    public UsuarioDAO() {
+        try {
+            this.conn = Conexao.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Listar usuários
