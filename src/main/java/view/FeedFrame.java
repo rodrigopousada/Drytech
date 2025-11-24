@@ -26,6 +26,9 @@ public class FeedFrame extends JFrame {
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        java.net.URL urlIcone = getClass().getResource("/imagens/logo.png");
+        Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(urlIcone);
+        setIconImage(iconeTitulo);
 
         // --- 2. CABEÇALHO (Boas Vindas) ---
         Usuario usuarioLogado = SessaoUsuario.getUsuarioLogado();

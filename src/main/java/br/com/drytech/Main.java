@@ -4,12 +4,13 @@ import view.LoginUsuario;
 import view.TelaInicial;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
+
 
 public class Main {
     public static void main(String[] args) {
 
-        Conexao.iniciarBanco();
         System.out.println("Iniciando Banco...");
 
         try (Connection conn = Conexao.getConnection()) {
@@ -17,6 +18,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
         }
+
 
     }
 }

@@ -24,6 +24,9 @@ public class CadastroUsuario extends JFrame {
         setSize(400, 350);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        java.net.URL urlIcone = getClass().getResource("/imagens/logo.png");
+        Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(urlIcone);
+        setIconImage(iconeTitulo);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
