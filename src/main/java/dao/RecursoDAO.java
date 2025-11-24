@@ -82,6 +82,22 @@ public class RecursoDAO {
             System.out.println("Erro ao listar recursos: "+ e.getMessage());
             e.printStackTrace();
         }
+
+        
         return recursos;
     }
+ public void deletar(int idRecurso) throws SQLException {
+        String sql = "DELETE FROM recursos WHERE id = ?";
+        
+        try (Connection conn = Conexao.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, idRecurso);
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            throw new SQLException("Erro ao deletar o recurso ID: " + idRecurso, e);
+        }
+    } 
+
 }

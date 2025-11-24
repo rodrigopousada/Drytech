@@ -180,6 +180,32 @@ public class FeedFrame extends JFrame {
         }
     }
 
+   private void acaoDeletarPost(Recurso recursoParaDeletar) {
+    // Exibe uma caixa de diálogo para confirmar a exclusão
+    int confirmacao = JOptionPane.showConfirmDialog(
+        this,
+        "Tem certeza que deseja apagar o recurso: \"" + recursoParaDeletar.getTitulo() + "\"?",
+        "Confirmar Exclusão",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirmacao == JOptionPane.YES_OPTION) {
+        try {
+            RecursoDAO dao = new RecursoDAO();
+            // 1. Chama o método deletar no DAO
+            dao.deletar(recursoParaDeletar.getId()); 
+
+            JOptionPane.showMessageDialog(this, "Recurso excluído com sucesso!");
+
+            // 2. Recarrega o feed para que o post desapareça da tela
+            carregarPosts(); 
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao deletar: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+}
     private void atualizarPainel() {
         panelConteudoFeed.removeAll();
         carregarPosts();
@@ -240,14 +266,42 @@ public class FeedFrame extends JFrame {
             panelRodape.add(lblAutor);
             panelRodape.add(lblLink);
 
-            // Monta o card
+            Usuario usuarioLogado = SessaoUsuario.getUsuarioLogado(); 
+
+            if (usuarioLogado != null) {
+               
+                boolean isAdmin = "admin".equalsIgnoreCase(usuarioLogado.getTipo());
+                
+            
+                boolean isCriador = usuarioLogado.getId() == recurso.getUsuarioId(); 
+
+                if (isAdmin || isCriador) {
+                    
+                    panelRodape.add(new JLabel("  |  ")); 
+
+                    JButton btnDeletar = new JButton("Apagar");
+                    btnDeletar.setFont(new Font("Arial", Font.BOLD, 10));
+                    btnDeletar.setBackground(new Color(220, 53, 69)); // Vermelho
+                    btnDeletar.setForeground(Color.WHITE);
+                    btnDeletar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    btnDeletar.setBorderPainted(false);
+                    btnDeletar.setFocusPainted(false);
+                 
+                    btnDeletar.setBounds(25, 25, 70, 20);
+                 
+                    btnDeletar.addActionListener(e -> acaoDeletarPost(recurso));
+
+                    panelRodape.add(btnDeletar);
+                }
+            }
+           
             card.add(lblTituloCard);
             card.add(Box.createVerticalStrut(5));
             card.add(txtDesc);
-            card.add(Box.createVerticalGlue()); // Empurra o rodapé pra baixo
+            card.add(Box.createVerticalGlue()); 
             card.add(panelRodape);
 
-            // Adiciona no Feed
+            
             panelConteudoFeed.add(card);
             panelConteudoFeed.add(Box.createVerticalStrut(15)); // Espaço entre cards
         }
