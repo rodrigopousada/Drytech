@@ -32,9 +32,8 @@ Flyway (versionamento do banco de dados)
 
 DAO Pattern
 
-Banco de Dados Local (MySQL ou SQLite)
+Banco de Dados Local MySQL 
 
-Clean Code
 
 🧩 Funcionalidades Implementadas
 
